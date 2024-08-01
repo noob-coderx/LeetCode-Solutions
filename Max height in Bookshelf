@@ -1,0 +1,30 @@
+################### MAX HEIGHT OF BOOKSHELF #########################
+class Solution:
+    def minHeightShelves(self, books: List[List[int]], shelfWidth: int) -> int:
+        res = []
+        
+        def book_keep_func(i, max_height, shelf_taken):
+            if i >= len(books):
+                res.append(sum(max_height))
+                return
+            
+            [wi, hi] = books[i]
+            
+            # Option 1: Place the book on the current shelf if it fits
+            if shelfWidth - shelf_taken >= wi:
+                new_max_height = max_height[:]
+                new_max_height[-1] = max(new_max_height[-1], hi)
+                book_keep_func(i + 1, new_max_height, shelf_taken + wi)
+            
+            # Option 2: Place the book on a new shelf
+            new_max_height = max_height[:]
+            new_max_height.append(hi)
+            book_keep_func(i + 1, new_max_height, wi)
+        
+        [wi, hi] = books[0]
+        book_keep_func(1, [hi], wi)
+        return min(res)
+        
+
+            
+
